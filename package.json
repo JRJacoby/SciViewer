@@ -2,13 +2,29 @@
   "name": "sci-viewer",
   "displayName": "SciViewer",
   "description": "View scientific data files (HDF5, pickle, etc.) in VS Code",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "publisher": "jrdja",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jrdja/vscviewer"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },
   "categories": [
+    "Visualization",
+    "Data Science",
     "Other"
+  ],
+  "keywords": [
+    "hdf5",
+    "h5",
+    "scientific",
+    "data",
+    "viewer",
+    "numpy",
+    "hierarchical"
   ],
   "activationEvents": [],
   "main": "./out/extension.js",

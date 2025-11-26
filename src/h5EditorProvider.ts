@@ -31,11 +31,22 @@ export class H5EditorProvider implements vscode.CustomReadonlyEditorProvider {
     webviewPanel.webview.options = { enableScripts: true };
     webviewPanel.webview.html = this.getHtmlContent();
 
-    const result = await runH5Reader(
-      this.context.extensionPath,
-      document.uri.fsPath
-    );
-    webviewPanel.webview.postMessage({ type: 'data', payload: result });
+    const loadData = async () => {
+      const result = await runH5Reader(
+        this.context.extensionPath,
+        document.uri.fsPath
+      );
+      webviewPanel.webview.postMessage({ type: 'data', payload: result });
+    };
+
+    webviewPanel.webview.onDidReceiveMessage(async (message) => {
+      if (message.type === 'refresh') {
+        webviewPanel.webview.postMessage({ type: 'loading' });
+        await loadData();
+      }
+    });
+
+    await loadData();
   }
 
   private getHtmlContent(): string {
@@ -291,6 +302,7 @@ export class H5EditorProvider implements vscode.CustomReadonlyEditorProvider {
 <body>
   <header>
     <h1>SciViewer</h1>
+    <button id="refresh" title="Refresh">↻</button>
   </header>
 
   <main class="hidden">
@@ -437,8 +449,19 @@ export class H5EditorProvider implements vscode.CustomReadonlyEditorProvider {
         .replace(/"/g, '&quot;');
     }
 
+    document.getElementById('refresh').addEventListener('click', function() {
+      vscode.postMessage({ type: 'refresh' });
+    });
+
     window.addEventListener('message', function(event) {
       var message = event.data;
+
+      if (message.type === 'loading') {
+        document.getElementById('loading').classList.remove('hidden');
+        document.getElementById('error').classList.add('hidden');
+        document.querySelector('main').classList.add('hidden');
+        selectedNode = null;
+      }
 
       if (message.type === 'data') {
         document.getElementById('loading').classList.add('hidden');
@@ -446,8 +469,11 @@ export class H5EditorProvider implements vscode.CustomReadonlyEditorProvider {
         if (message.payload.error) {
           document.getElementById('error').textContent = message.payload.error;
           document.getElementById('error').classList.remove('hidden');
+          document.querySelector('main').classList.add('hidden');
         } else {
+          document.getElementById('error').classList.add('hidden');
           document.querySelector('main').classList.remove('hidden');
+          document.getElementById('detail-panel').classList.add('hidden');
           var tree = document.getElementById('tree');
           tree.innerHTML = '';
           tree.appendChild(renderNode(message.payload));
