@@ -5,6 +5,7 @@ View scientific data files directly in VS Code.
 ## Supported Formats
 
 - **HDF5** (`.h5`, `.hdf5`) - Hierarchical Data Format
+- **Pickle** (`.pkl`, `.pickle`, `.p`) - Python serialized objects
 
 ## Features
 
@@ -16,24 +17,36 @@ View scientific data files directly in VS Code.
 
 ## Requirements
 
-- Python 3.x with `h5py` installed
+- Python 3.x with appropriate packages:
 
 ```bash
-pip install h5py
+pip install h5py numpy pandas
 ```
+
+(Only `h5py` is required for HDF5 files. `numpy` and `pandas` are optional but recommended for full pickle support.)
 
 ## Installation
 
 1. Install from VS Code Marketplace (search "SciViewer")
-2. Ensure Python with h5py is available in your PATH
+2. Ensure Python is available in your PATH
 3. (Optional) Configure `sciViewer.pythonPath` if Python is not auto-detected
 
 ## Usage
 
-Simply open any `.h5` or `.hdf5` file in VS Code. The custom viewer will automatically display the file structure.
+Simply open any supported file in VS Code. The custom viewer will automatically display the file structure.
 
 - Click on **groups** (📁) to expand/collapse
 - Click on **datasets** (📊) to view details and data preview
+
+### Pickle Support
+
+Pickle files display Python objects as a tree:
+- `dict` → expandable group
+- `list`, `tuple`, `set` → expandable group with indexed children
+- `numpy.ndarray` → dataset with shape, dtype, preview
+- `pandas.DataFrame` → dataset with shape, preview of first rows
+- Scalars (`int`, `float`, `str`, etc.) → dataset with value preview
+- Custom objects → dataset with `str()` representation
 
 ## Extension Settings
 
@@ -54,4 +67,3 @@ Simply open any `.h5` or `.hdf5` file in VS Code. The custom viewer will automat
 ## License
 
 MIT
-

@@ -2,6 +2,15 @@
 
 All notable changes to the SciViewer extension will be documented in this file.
 
+## [0.2.0] - 2024-11-26
+
+### Added
+- **Pickle file support** (`.pkl`, `.pickle`, `.p`)
+  - Recursive tree view of Python objects
+  - Supports: dict, list, tuple, set, numpy arrays, pandas DataFrames
+  - Custom objects show str() representation
+- Refactored architecture for easy addition of new formats
+
 ## [0.1.0] - 2024-11-26
 
 ### Added
@@ -13,4 +22,3 @@ All notable changes to the SciViewer extension will be documented in this file.
 - Refresh button to reload file
 - Configurable Python path via `sciViewer.pythonPath`
 - VS Code theme integration (light/dark)
-
