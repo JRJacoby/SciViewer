@@ -1,0 +1,40 @@
+{
+  "name": "hdf5-viewer",
+  "displayName": "HDF5 Viewer",
+  "description": "View HDF5 file contents in VS Code",
+  "version": "0.0.1",
+  "publisher": "jrdja",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "customEditors": [
+      {
+        "viewType": "hdf5Viewer.editor",
+        "displayName": "HDF5 Viewer",
+        "selector": [
+          { "filenamePattern": "*.h5" },
+          { "filenamePattern": "*.hdf5" }
+        ],
+        "priority": "default"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.0"
+  }
+}
+

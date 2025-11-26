@@ -1,0 +1,11 @@
+out/
+node_modules/
+.venv/
+*.vsix
+.DS_Store
+*.pyc
+__pycache__/
+.cursor/
+test.h5
+test-workspace/
+
