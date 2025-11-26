@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
+import { runH5Reader } from './pythonRunner';
 
 export class H5EditorProvider implements vscode.CustomReadonlyEditorProvider {
-  public static readonly viewType = 'hdf5Viewer.editor';
+  public static readonly viewType = 'sciViewer.h5';
 
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
     const provider = new H5EditorProvider(context);
@@ -28,10 +29,16 @@ export class H5EditorProvider implements vscode.CustomReadonlyEditorProvider {
     _token: vscode.CancellationToken
   ): Promise<void> {
     webviewPanel.webview.options = { enableScripts: true };
-    webviewPanel.webview.html = this.getHtmlContent(document.uri.fsPath);
+    webviewPanel.webview.html = this.getHtmlContent();
+
+    const result = await runH5Reader(
+      this.context.extensionPath,
+      document.uri.fsPath
+    );
+    webviewPanel.webview.postMessage({ type: 'data', payload: result });
   }
 
-  private getHtmlContent(filePath: string): string {
+  private getHtmlContent(): string {
     return `
       <!DOCTYPE html>
       <html>
@@ -45,17 +52,44 @@ export class H5EditorProvider implements vscode.CustomReadonlyEditorProvider {
             color: var(--vscode-foreground);
             background-color: var(--vscode-editor-background);
           }
-          code {
-            background-color: var(--vscode-textCodeBlock-background);
-            padding: 2px 6px;
-            border-radius: 3px;
+          #content {
+            white-space: pre-wrap;
+            font-family: var(--vscode-editor-font-family);
+            font-size: var(--vscode-editor-font-size);
+          }
+          .loading {
+            color: var(--vscode-descriptionForeground);
+          }
+          .error {
+            color: var(--vscode-errorForeground);
+            background: var(--vscode-inputValidation-errorBackground);
+            padding: 10px;
+            border-radius: 4px;
           }
         </style>
       </head>
       <body>
-        <h1>HDF5 Viewer</h1>
-        <p>Opening file: <code>${filePath}</code></p>
-        <p>This will show file contents once the Python backend is wired up.</p>
+        <h1>SciViewer</h1>
+        <div id="content" class="loading">Loading...</div>
+        <script>
+          const vscode = acquireVsCodeApi();
+          
+          window.addEventListener('message', event => {
+            const message = event.data;
+            if (message.type === 'data') {
+              const content = document.getElementById('content');
+              content.classList.remove('loading');
+              
+              if (message.payload.error) {
+                content.classList.add('error');
+                content.textContent = 'Error: ' + message.payload.error;
+              } else {
+                console.log('Received HDF5 data:', message.payload);
+                content.textContent = JSON.stringify(message.payload, null, 2);
+              }
+            }
+          });
+        </script>
       </body>
       </html>
     `;
