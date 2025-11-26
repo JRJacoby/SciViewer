@@ -2,7 +2,7 @@
 
 All notable changes to the SciViewer extension will be documented in this file.
 
-## [Unreleased]
+## [0.3.0] - 2024-11-26
 
 ### Added
 - **Parquet file support** (`.parquet`, `.pqt`)

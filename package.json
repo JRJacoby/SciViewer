@@ -2,7 +2,7 @@
   "name": "sci-viewer",
   "displayName": "SciViewer",
   "description": "View scientific data files (HDF5, pickle, etc.) in VS Code",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "publisher": "JohnJacoby",
   "license": "MIT",
   "icon": "media/icon.png",
