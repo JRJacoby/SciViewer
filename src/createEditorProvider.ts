@@ -1,19 +1,25 @@
 import * as vscode from 'vscode';
-import { runH5Reader } from './pythonRunner';
+import { runPythonReader } from './pythonRunner';
 
-export class H5EditorProvider implements vscode.CustomReadonlyEditorProvider {
-  public static readonly viewType = 'sciViewer.h5';
-
-  public static register(context: vscode.ExtensionContext): vscode.Disposable {
-    const provider = new H5EditorProvider(context);
+export function createEditorProvider(
+  viewType: string,
+  scriptName: string
+): (context: vscode.ExtensionContext) => vscode.Disposable {
+  return (context: vscode.ExtensionContext) => {
+    const provider = new SciEditorProvider(context, scriptName);
     return vscode.window.registerCustomEditorProvider(
-      H5EditorProvider.viewType,
+      viewType,
       provider,
       { webviewOptions: { retainContextWhenHidden: true } }
     );
-  }
+  };
+}
 
-  constructor(private readonly context: vscode.ExtensionContext) {}
+class SciEditorProvider implements vscode.CustomReadonlyEditorProvider {
+  constructor(
+    private readonly context: vscode.ExtensionContext,
+    private readonly scriptName: string
+  ) {}
 
   async openCustomDocument(
     uri: vscode.Uri,
@@ -29,11 +35,12 @@ export class H5EditorProvider implements vscode.CustomReadonlyEditorProvider {
     _token: vscode.CancellationToken
   ): Promise<void> {
     webviewPanel.webview.options = { enableScripts: true };
-    webviewPanel.webview.html = this.getHtmlContent();
+    webviewPanel.webview.html = getHtmlContent();
 
     const loadData = async () => {
-      const result = await runH5Reader(
+      const result = await runPythonReader(
         this.context.extensionPath,
+        this.scriptName,
         document.uri.fsPath
       );
       webviewPanel.webview.postMessage({ type: 'data', payload: result });
@@ -48,9 +55,10 @@ export class H5EditorProvider implements vscode.CustomReadonlyEditorProvider {
 
     await loadData();
   }
+}
 
-  private getHtmlContent(): string {
-    return `
+function getHtmlContent(): string {
+  return `
 <!DOCTYPE html>
 <html>
 <head>
@@ -489,6 +497,6 @@ export class H5EditorProvider implements vscode.CustomReadonlyEditorProvider {
   </script>
 </body>
 </html>
-    `;
-  }
+  `;
 }
+

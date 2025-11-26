@@ -2,28 +2,29 @@ import * as vscode from 'vscode';
 import { spawn } from 'child_process';
 import * as path from 'path';
 
-export interface H5Data {
+export interface SciNode {
   name: string;
   path: string;
   type: 'group' | 'dataset';
   attrs: Record<string, unknown>;
-  children?: H5Data[];
+  children?: SciNode[];
   shape?: number[];
   dtype?: string;
   preview?: unknown;
 }
 
-export interface H5Error {
+export interface SciError {
   error: string;
 }
 
-export type H5Result = H5Data | H5Error;
+export type SciResult = SciNode | SciError;
 
-export async function runH5Reader(
+export async function runPythonReader(
   extensionPath: string,
+  scriptName: string,
   filePath: string
-): Promise<H5Result> {
-  const scriptPath = path.join(extensionPath, 'python', 'h5_reader.py');
+): Promise<SciResult> {
+  const scriptPath = path.join(extensionPath, 'python', scriptName);
   const pythonPath = getPythonPath();
 
   return new Promise((resolve) => {
