@@ -2,6 +2,15 @@
 
 All notable changes to the SciViewer extension will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- **Parquet file support** (`.parquet`, `.pqt`)
+  - Summary view with row count, column count, compression, file size
+  - Schema view with column names and data types
+  - Preview of first 10 rows as a table
+  - New table-based viewer layout
+
 ## [0.2.0] - 2024-11-26
 
 ### Added

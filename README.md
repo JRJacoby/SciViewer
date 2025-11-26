@@ -6,6 +6,7 @@ View scientific data files directly in VS Code.
 
 - **HDF5** (`.h5`, `.hdf5`) - Hierarchical Data Format
 - **Pickle** (`.pkl`, `.pickle`, `.p`) - Python serialized objects
+- **Parquet** (`.parquet`, `.pqt`) - Columnar data format
 
 ## Features
 
@@ -20,10 +21,12 @@ View scientific data files directly in VS Code.
 - Python 3.x with appropriate packages:
 
 ```bash
-pip install h5py numpy pandas
+pip install h5py numpy pandas pyarrow
 ```
 
-(Only `h5py` is required for HDF5 files. `numpy` and `pandas` are optional but recommended for full pickle support.)
+- `h5py` - required for HDF5 files
+- `numpy`, `pandas` - recommended for full pickle support
+- `pyarrow` - required for parquet files
 
 ## Installation
 
@@ -47,6 +50,13 @@ Pickle files display Python objects as a tree:
 - `pandas.DataFrame` → dataset with shape, preview of first rows
 - Scalars (`int`, `float`, `str`, etc.) → dataset with value preview
 - Custom objects → dataset with `str()` representation
+
+### Parquet Support
+
+Parquet files display a tabular view with:
+- **Summary** - row count, column count, compression, file size
+- **Schema** - column names and data types
+- **Preview** - first 10 rows as a table
 
 ## Extension Settings
 

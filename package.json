@@ -23,6 +23,8 @@
     "h5",
     "pickle",
     "pkl",
+    "parquet",
+    "pqt",
     "scientific",
     "data",
     "viewer",
@@ -49,6 +51,15 @@
           { "filenamePattern": "*.pkl" },
           { "filenamePattern": "*.pickle" },
           { "filenamePattern": "*.p" }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "sciViewer.parquet",
+        "displayName": "Parquet Viewer",
+        "selector": [
+          { "filenamePattern": "*.parquet" },
+          { "filenamePattern": "*.pqt" }
         ],
         "priority": "default"
       }
