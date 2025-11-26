@@ -25,6 +25,7 @@
     "pkl",
     "parquet",
     "pqt",
+    "npy",
     "scientific",
     "data",
     "viewer",
@@ -60,6 +61,14 @@
         "selector": [
           { "filenamePattern": "*.parquet" },
           { "filenamePattern": "*.pqt" }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "sciViewer.npy",
+        "displayName": "NumPy Array Viewer",
+        "selector": [
+          { "filenamePattern": "*.npy" }
         ],
         "priority": "default"
       }

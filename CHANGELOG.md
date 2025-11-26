@@ -10,6 +10,10 @@ All notable changes to the SciViewer extension will be documented in this file.
   - Schema view with column names and data types
   - Preview of first 10 rows as a table
   - New table-based viewer layout
+- **NumPy array support** (`.npy`)
+  - Shape, dtype, and element count
+  - Preview of first 20 elements
+  - New array viewer layout
 
 ## [0.2.0] - 2024-11-26
 

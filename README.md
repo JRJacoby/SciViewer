@@ -7,6 +7,7 @@ View scientific data files directly in VS Code.
 - **HDF5** (`.h5`, `.hdf5`) - Hierarchical Data Format
 - **Pickle** (`.pkl`, `.pickle`, `.p`) - Python serialized objects
 - **Parquet** (`.parquet`, `.pqt`) - Columnar data format
+- **NumPy** (`.npy`) - NumPy array files
 
 ## Features
 
@@ -57,6 +58,13 @@ Parquet files display a tabular view with:
 - **Summary** - row count, column count, compression, file size
 - **Schema** - column names and data types
 - **Preview** - first 10 rows as a table
+
+### NumPy Array Support
+
+NumPy `.npy` files display:
+- **Shape** - array dimensions
+- **Dtype** - data type
+- **Preview** - first 20 elements (flattened)
 
 ## Extension Settings
 
